@@ -136,7 +136,7 @@ if __name__ == '__main__':
                     driver.switch_to.window(searchWindow)
 
                     links_visited += 1
-                    links_visited_all += links_visited
+                    links_visited_all += 1
 
                 try:
                     nextPageButton = driver.find_element_by_css_selector("li.pref-next.u-valign-sub > span")
