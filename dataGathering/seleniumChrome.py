@@ -24,14 +24,14 @@ def disable_stuff():
 if __name__ == '__main__':
 
     collected_data_location = "..\\data\\cars500.csv"
-    cars_number = 500
+    cars_number = 480
     min_year = 2007
     links_visited_all = 0
 
     models = {
-        "BMW": ["Series 1", "Series 3", "Series 5", "Series 6", "Series 7", "    X1", "    X3", "    X4", "    X5", "    X6"],
-        "Mercedes-Benz": ["A-Klasse", "B-Klasse", "C-Klasse","E-Klasse", "S-Klasse", "G-Klasse", "GLC-Klasse", "GLE-Klasse", "GLK-Klasse", "GL-Klasse"],
-        "Audi": ["A1", "A3", "A4", "A5", "A6", "A7", "A8", "Q3", "Q5", "Q7"]}
+        "BMW": ["Series 1", "Series 3", "Series 5", "Series 6", "Series 7", "    X1", "    X3", "    X5", "    X6"],
+        "Mercedes-Benz": ["A-Klasse", "B-Klasse", "C-Klasse", "E-Klasse", "S-Klasse", "GLK-Klasse", "ML-Klasse"]}#,
+        #"Audi": ["A1", "A3", "A4", "A5", "A6", "A7", "A8", "Q3", "Q5", "Q7"]}
 
     num = re.compile(r'[^\d.]+')
 
