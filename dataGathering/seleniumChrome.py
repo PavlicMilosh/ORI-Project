@@ -1,3 +1,4 @@
+import os
 import re
 from time import sleep, time
 
@@ -17,45 +18,49 @@ def disable_stuff():
     options = webdriver.ChromeOptions()
     options.add_argument("--headless")
     options.add_experimental_option("prefs", {"profile.managed_default_content_settings.images": 2})
+    options.add_argument("--disable-application-cache")
+    options.add_argument("--incognito")
     return options
 
 
 if __name__ == '__main__':
 
-    collected_data_location = "..\\data\\cars.backup.csv"
-    cars_number = 40
+    collected_data_location = "..\\data\\cars500.csv"
+    cars_number = 500
     min_year = 2007
     links_visited_all = 0
 
     models = {
-        "BMW": ["Series 1", "Series 3", "Series 5", "Series 6", "Series 7", "    X1", "    X3", "    X4", "    X5", "    X6"],
-        #"Mercedes-Benz": ["A-Klasse", "B-Klasse", "C-Klasse", "E-Klasse", "S-Klasse", "G-Klasse", "GLA-Klasse", "GLC-Klasse", "GLE-Klasse", "GLK-Klasse", "GL-Klasse"],
-        "Audi": [#"A1", "A3", "A4", "A5", "A6", "A7", "A8",
-            "Q3", "Q5", "Q7"]}
+        #"BMW": ["Series 1", "Series 3", "Series 5", "Series 6", "Series 7", "    X1", "    X3", "    X4", "    X5", "    X6"],
+        #"Mercedes-Benz": ["A-Klasse", "B-Klasse", "C-Klasse", "E-Klasse", "S-Klasse", "G-Klasse", "GLC-Klasse", "GLE-Klasse", "GLK-Klasse", "GL-Klasse"]
+        "Audi": ["A1", "A3", "A4", "A5", "A6", "A7", "A8", "Q3", "Q5", "Q7"]}
 
     num = re.compile(r'[^\d.]+')
 
-    driver = webdriver.Chrome(chrome_options=disable_stuff())
-    driver.get("https://www.mobile.de/?lang=en")
-    e = driver.find_element_by_id("qsdet")
-    e.click()
-    mainWindow = driver.current_window_handle
+
 
     stopwatch_start = time()
 
     for make in models.keys():
-
-        # select make
-        sleep(0.5)
-        select = Select(driver.find_element_by_id("selectMake1-ds"))
-        select.select_by_visible_text(make)
-
-        # select year
-        select = Select(driver.find_element_by_id("minFirstRegistrationDate-s"))
-        select.select_by_visible_text(str(min_year))
-
         for model in models[make]:
 
+            # driver
+            driver = webdriver.Chrome(chrome_options=disable_stuff())
+            driver.get("https://www.mobile.de/?lang=en")
+            e = driver.find_element_by_id("qsdet")
+            e.click()
+            mainWindow = driver.current_window_handle
+
+            # select make
+            sleep(0.5)
+            select = Select(driver.find_element_by_id("selectMake1-ds"))
+            select.select_by_visible_text(make)
+
+            # select year
+            select = Select(driver.find_element_by_id("minFirstRegistrationDate-s"))
+            select.select_by_visible_text(str(min_year))
+
+            # open file
             carsFile = open(collected_data_location, "a")
 
             driver.implicitly_wait(10)
@@ -107,15 +112,15 @@ if __name__ == '__main__':
                     car.model = model
 
                     try:
-                        WebDriverWait(driver, 3).until(
+                        WebDriverWait(driver, 5).until(
                             EC.presence_of_element_located((By.ID, "rbt-cubicCapacity-v")))
-                        WebDriverWait(driver, 3).until(
+                        WebDriverWait(driver, 5).until(
                             EC.presence_of_element_located((By.ID, "rbt-mileage-v")))
-                        WebDriverWait(driver, 3).until(
+                        WebDriverWait(driver, 5).until(
                             EC.presence_of_element_located((By.ID, "rbt-firstRegistration-v")))
-                        WebDriverWait(driver, 3).until(
+                        WebDriverWait(driver, 5).until(
                             EC.presence_of_element_located((By.ID, "rbt-power-v")))
-                        WebDriverWait(driver, 3).until(
+                        WebDriverWait(driver, 5).until(
                             EC.presence_of_element_located((By.CLASS_NAME, "rbt-prime-price")))
                     except TimeoutException:
                         print("\t! Car attributes exception")
@@ -154,3 +159,10 @@ if __name__ == '__main__':
             driver.switch_to.window(mainWindow)
 
             carsFile.close()
+
+            driver.delete_all_cookies()
+
+            driver.quit()
+
+            sleep(10)
+
