@@ -26,7 +26,7 @@ def disable_stuff():
 if __name__ == '__main__':
 
     collected_data_location = "..\\data\\cars500.csv"
-    cars_number = 500
+    cars_number = 480
     min_year = 2007
     links_visited_all = 0
 
@@ -36,9 +36,6 @@ if __name__ == '__main__':
         "Audi": ["A1", "A3", "A4", "A5", "A6", "A7", "A8", "Q3", "Q5", "Q7"]}
 
     num = re.compile(r'[^\d.]+')
-
-
-
     stopwatch_start = time()
 
     for make in models.keys():
@@ -57,8 +54,7 @@ if __name__ == '__main__':
             select.select_by_visible_text(make)
 
             # select year
-            select = Select(driver.find_element_by_id("minFirstRegistrationDate-s"))
-            select.select_by_visible_text(str(min_year))
+            Select(driver.find_element_by_id("minFirstRegistrationDate-s")).select_by_visible_text(str(min_year))
 
             # open file
             carsFile = open(collected_data_location, "a")
@@ -72,6 +68,9 @@ if __name__ == '__main__':
             tabs = driver.window_handles
             driver.switch_to.window(tabs[-1])
             searchWindow = driver.current_window_handle
+
+            # select sorting criteria
+            Select(driver.find_element_by_id("so-sb")).select_by_visible_text("Newest ads first")
 
             try:
                 WebDriverWait(driver, 10).until(
@@ -135,7 +134,7 @@ if __name__ == '__main__':
                     car.price = num.sub('', driver.find_element_by_css_selector(".rbt-prime-price").text)
 
                     carsFile.write(car.get_line() + "\n")
-                    # print(str(car))
+                    # print(str(car) )
 
                     driver.close()
                     driver.switch_to.window(searchWindow)
@@ -159,10 +158,6 @@ if __name__ == '__main__':
             driver.switch_to.window(mainWindow)
 
             carsFile.close()
-
             driver.delete_all_cookies()
-
             driver.quit()
-
             sleep(10)
-
