@@ -1,4 +1,4 @@
-Make,Model,Mileage(km),year,ccm,power(kW),price
+make,model,mileage(km),year,ccm,power(kw),price(eur)
 Audi,A1,89967,2010,1390,90,9990
 Audi,A1,99800,2010,1598,77,11480
 Audi,A1,65020,2010,1390,90,12840
