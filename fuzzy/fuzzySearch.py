@@ -27,10 +27,8 @@ def year_function(x, c):
 
 
 def power_function(x, c):
-    compared = np.arange(x - 50, x + 50, 1)
-    val = fuzz.sigmf(compared, c - 20, 1)
-    plt.plot(compared, val)
-    plt.show()
+    compared = np.arange(x, x + 1, 1)
+    val = fuzz.gbellmf(compared, 25, 5, c+10)
     return val
 
 
@@ -48,7 +46,7 @@ def mileage_function(x, c):
 
 def price_function(x, c):
     compared = np.arange(x, x + 1, 1)
-    val = fuzz.gbellmf(compared, 0.15*c, 3, c)
+    val = fuzz.sigmf(compared, c * 1.3, -20 / c)
     return val
 
 
@@ -60,7 +58,3 @@ def calculate(compared: Car, given: Car):
             ccm_function(compared.ccm, given.ccm) * \
             mileage_function(compared.mileage, given.mileage) * \
             price_function(compared.price, given.price)
-
-if __name__ == '__main__':
-    # print(power_function())
-    print()
