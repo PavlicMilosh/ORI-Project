@@ -35,7 +35,7 @@ def neural_network_model(x, y):
     model.add(Dense(10))
     model.add(Dense(1))
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-    model.fit(x, y, epochs=1000000, batch_size=10)
+    model.fit(x, y, epochs=5000, batch_size=10)
     model.save("carPricePredictionModel")
     return model
 
@@ -46,8 +46,6 @@ if __name__ == '__main__':
     # model = neural_network_model(x, y)
     model = keras.models.load_model("carPricePredictionModel")
     dataset = numpy.loadtxt("..\\data\\cars500input.csv", delimiter=",")
-    x = dataset[:, 0:7]
-    values = model.predict(x)
-    for index, value in enumerate(values):
-        print(dataset[index][7] - value)
+    a = model.evaluate(x, y)
+
 
