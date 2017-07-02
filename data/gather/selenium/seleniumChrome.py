@@ -1,4 +1,3 @@
-import os
 import re
 from time import sleep, time
 
@@ -6,11 +5,11 @@ from selenium import webdriver
 from selenium.common.exceptions import TimeoutException, StaleElementReferenceException, NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
-from dataGathering.Car import Car
+from model.Car import Car
 
 
 def disable_stuff():
@@ -25,23 +24,23 @@ def disable_stuff():
 
 if __name__ == '__main__':
 
-    collected_data_location = "..\\data\\cars500.csv"
+    collected_data_location = "..\\data\\data\\cars500.csv"
     cars_number = 60
     years = range(2007, 2018)
     links_visited_all = 0
 
     models = {
-        #"BMW": ["Series 1", "Series 3", "Series 5", "Series 6", "Series 7", "    X1", "    X3", "    X5", "    X6"],
-        #"Mercedes-Benz": ["A-Klasse", "B-Klasse", "C-Klasse", "E-Klasse", "S-Klasse", "GLK-Klasse", "ML-Klasse"]
+        "BMW": ["Series 1", "Series 3", "Series 5", "Series 6", "Series 7", "    X1", "    X3", "    X5", "    X6"],
+        "Mercedes-Benz": ["A-Klasse", "B-Klasse", "C-Klasse", "E-Klasse", "S-Klasse", "GLK-Klasse", "ML-Klasse"],
         "Audi": ["A1", "A3", "A4", "A5", "A6", "A7", "A8", "Q3", "Q5", "Q7"]}
 
     num = re.compile(r'[^\d.]+')
     stopwatch_start = time()
 
-
     for make in models.keys():
         for model in models[make]:
             for year in years:
+
                 # driver
                 driver = webdriver.Chrome(chrome_options=disable_stuff())
                 driver.get("https://www.mobile.de/?lang=en")
@@ -67,6 +66,7 @@ if __name__ == '__main__':
                 Select(driver.find_element_by_id("selectModel1-ds")).select_by_visible_text(model)
                 driver.find_element_by_id("dsp-upper-search-btn").send_keys(Keys.CONTROL, Keys.RETURN)
 
+                # tabs handling
                 tabs = driver.window_handles
                 driver.switch_to.window(tabs[-1])
                 searchWindow = driver.current_window_handle
@@ -91,7 +91,7 @@ if __name__ == '__main__':
                     for car_link in car_links:
 
                         if links_visited % 20 == 0:
-                            print("Visited " + str(links_visited) + " links on the page in " + str(time() - stopwatch_start) + " s")
+                            print("Visited " + str(links_visited) + " links for model <" + model + "> in " + str(time() - stopwatch_start) + " s")
                             print("Visited " + str(links_visited_all) + " links in " + str(time() - stopwatch_start) + " s")
 
                         if links_visited > cars_number:

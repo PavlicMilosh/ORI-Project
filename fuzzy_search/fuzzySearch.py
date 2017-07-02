@@ -1,8 +1,7 @@
 import numpy as np
 import skfuzzy as fuzz
-import matplotlib.pyplot as plt
 
-from dataGathering import Car
+from model import Car
 
 
 # m treba da se postavi na trazeni auto, a primer je ret vrednost

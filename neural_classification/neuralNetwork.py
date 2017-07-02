@@ -1,12 +1,13 @@
+import datetime
+
 import keras
+import numpy
 from keras.layers import Dense
 from keras.models import Sequential
-import datetime
-import h5py
+import pandas as pd
+from sklearn.model_selection import train_test_split
 
-import numpy
-
-from dataGathering.Car import Car
+from model.Car import Car
 
 
 def data_converter(input, output):
@@ -21,9 +22,10 @@ def data_converter(input, output):
 
 
 def read_input(file):
-    dataset = numpy.loadtxt(file, delimiter=",")
-    x = dataset[:, 0:7]
-    y = dataset[:, 7]
+    daframe = pd.read_csv(file, delimiter=",")
+    x = numpy.array(daframe)
+    y = numpy.array()
+    xData, yData, xTest, yTest = train_test_split(dataset)
     return x, y
 
 
@@ -42,7 +44,7 @@ def neural_network_model(x, y):
 
 if __name__ == '__main__':
     data_converter("..\\data\\cars500fixed.csv", "..\\data\\cars500input.csv")
-    x, y = read_input("..\\data\\cars500input.csv")
+    xData, yData, xTest, yTest = read_input("..\\data\\cars500input.csv")
     # model = neural_network_model(x, y)
     model = keras.models.load_model("carPricePredictionModel")
     dataset = numpy.loadtxt("..\\data\\cars500input.csv", delimiter=",")
