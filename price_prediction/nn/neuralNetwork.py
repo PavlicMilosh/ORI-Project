@@ -40,7 +40,7 @@ def read_input(file):
     return x_data, y_data, x_test, y_test
 
 
-def neural_network_model():
+def neural_network_model(x, y, save_path):
     model = Sequential()
     model.add(Dense(6, input_dim=6, kernel_initializer='normal', activation='relu'))
     model.add(Dense(1, kernel_initializer='normal'))
