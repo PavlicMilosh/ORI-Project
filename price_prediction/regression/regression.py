@@ -1,15 +1,15 @@
 import pandas as pd
 import numpy as np
-from scipy import stats
 from sklearn.model_selection import train_test_split
-from sklearn import preprocessing, svm
 from sklearn.linear_model import LinearRegression, RANSACRegressor, HuberRegressor, TheilSenRegressor
 import pickle
+import datetime
+from model.Car import Car
 
 
-def predict(clf, input):
-    print('Coefficients: \n', clf.coef_)
-    #print('Variance score: %.4f' % clf.score(X_test, Y_test))
+def predict(clf, X):
+    forecast_set = clf.predict(X)
+    print(forecast_set)
 
 
 def load_classifier(path):
@@ -41,19 +41,34 @@ def load_data(path):
     df['age'] = df['curr_year'] - df['prod_year']
     df = df.drop(['curr_year'], 1)
     df = df.drop(['prod_year'], 1)
-    df = df.drop(['mileage(km)'], 1)
+    # df = df.drop(['mileage(km)'], 1)
+    print(df.head())
     return df
 
 
-if __name__ == '__main__':
+def generate_input_data(car: Car, years):
+    now = datetime.datetime.now()
+    car_age = now.year - car.year
+    added = []
+    for i in range(1, years + 1):
+        added.append([car.lux_value(), car.type_value(), car.mileage+(i*20000), car.ccm, car.power, car_age + i])
+    df = pd.DataFrame(columns=("lux", "type", "mileage(km)", "ccm", "power(kw)", "age"), data=added)
+    X = np.array(df)
+    return X
 
+
+if __name__ == '__main__':
     data_path = "..\\..\\data\\data\\cars500input.csv"
     classifier_path = "..\\..\\saved_models\\linear_regression.pickle"
 
-    #train(load_data(data_path), classifier_path)
-
+    train(load_data(data_path), classifier_path)
     clf = load_classifier(classifier_path)
-    predict(clf, "")
+
+    car = Car("Audi,A1,6500,2017,1000,63,15950")
+    years = 5
+    X = generate_input_data(car, years)
+
+    predict(clf, X)
 
 
 

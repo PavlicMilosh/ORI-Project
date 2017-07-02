@@ -1,4 +1,4 @@
-model,make,mileage(km),prod_year,ccm,power(kW),curr_year,price(eur)
+lux,type,mileage(km),prod_year,ccm,power(kW),curr_year,price(eur)
 10,1,89967,2010,1390,90,2017,9990
 10,1,99800,2010,1598,77,2017,11480
 10,1,65020,2010,1390,90,2017,12840
