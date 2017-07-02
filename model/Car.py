@@ -64,11 +64,11 @@ class Car:
     def get_input_data(self, current_year):
         return str(self.lux[self.model]) + "," + \
                str(self.type[self.model]) + "," + \
-               str(self.mileage) + "," + \
+               str(self.mileage/1000) + "," + \
                str(self.year) + "," + \
                str(self.ccm) + "," + \
                str(self.power) + "," + \
                str(current_year) + "," + \
-               str(self.price) + "\n"
+               str(self.price/1000) + "\n"
 
 
