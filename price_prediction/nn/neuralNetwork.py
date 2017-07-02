@@ -47,37 +47,26 @@ def neural_network_model():
     # Compile model
     model.compile(loss='mean_squared_error', optimizer='adam')
 
-    # model.fit(x, y, epochs=100)
-    # model.save(save_path)
+    model.fit(x, y, epochs=100)
+    model.save(save_path)
     return model
-
-
-def a(x, y):
-    estimators = []
-    estimators.append(('standardize', StandardScaler()))
-    estimators.append(('mlp', KerasRegressor(build_fn=neural_network_model, epochs=50, batch_size=5, verbose=0)))
-    pipeline = Pipeline(estimators)
-    kfold = KFold(n_splits=10, random_state=7)
-    results = cross_val_score(pipeline, x, y, cv=kfold)
-    print("Standardized: %.2f (%.2f) MSE" % (results.mean(), results.std()))
 
 
 if __name__ == '__main__':
 
     save_path = "..\\..\\saved_models\\carPricePredictionModel.h5"
     data_converter("..\\..\\data\\data\\cars500fixed.csv", "..\\..\\data\\data\\cars500input.csv")
-    # x_data, y_data, x_test, y_test = read_input("..\\..\\data\\data\\cars500input.csv")
-    # model = neural_network_model(x_data, y_data, save_path)
-    # # model = keras.models.load_model(save_path)
-    # model.evaluate(x_test, y_test)
-    # tested = model.predict(x_test)
-    # err = 0
-    # for i, t in enumerate(y_test):
-    #     err += (tested[i] - t) ** 2
-    #     print(abs(tested[i] - t))
-    # print("\nerror: " + str(err / len(y_test)))
+    x_data, y_data, x_test, y_test = read_input("..\\..\\data\\data\\cars500input.csv")
+    model = neural_network_model(x_data, y_data, save_path)
+    # model = keras.models.load_model(save_path)
+    model.evaluate(x_test, y_test)
+    tested = model.predict(x_test)
+    err = 0
+    for i, t in enumerate(y_test):
+        err += (tested[i] - t) ** 2
+        print(abs(tested[i] - t))
+    print("\nerror: " + str(err / len(y_test)))
 
-    # a(x_data, y_data)
 
 
 
