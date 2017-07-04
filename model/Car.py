@@ -1,3 +1,5 @@
+
+
 class Car:
 
     lux = {"A1":10, "A-Klasse":12, "A3":20, "B-Klasse":22, "Series 1":25,
@@ -25,6 +27,7 @@ class Car:
         self.ccm = 0
         self.power = 0
         self.price = 0
+        self.search_val = None
 
     def __init__(self, str):
         data = str.split(",")
@@ -35,6 +38,7 @@ class Car:
         self.ccm = int(data[4])
         self.power = int(data[5])
         self.price = int(data[6])
+        self.search_val = None
 
     def lux_value(self):
         return self.lux[self.model]
@@ -45,11 +49,18 @@ class Car:
     def __str__(self):
         return "make= " + self.make + \
                "; model= " + self.model + \
-               "; mileage= " + self.mileage + \
-               "; year= " + self.year + \
-               "; ccm= " + self.ccm + \
-               "; power= " + self.power + \
-               "; price= " + self.price
+               "; mileage= " + str(self.mileage) + \
+               "; year= " + str(self.year) + \
+               "; ccm= " + str(self.ccm) + \
+               "; power= " + str(self.power) + \
+               "; price= " + str(self.price) + \
+               "; search_val= " + str(self.search_val)
+
+    def __lt__(self, other):
+        return self.search_val > other.search_val
+
+    def __eq__(self, other):
+        return self.search_val == other.search_val
 
     def get_line(self):
         #make,model,mileage,year,ccm,power,price
